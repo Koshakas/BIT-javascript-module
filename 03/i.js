@@ -27,8 +27,13 @@ console.log("--------Egzameno rezultatas-----------");
 
 let result = rand(1, 10);
 console.log(result);
-if (result < 4) console.log("Egzamenas neišlaikytas");
-else console.log("Egzamenas išlaikytas");
+
+// result < 4 ? console.log("Egzamenas neišlaikytas") : console.log("Egzamenas išlaikytas");
+
+// if (result <= 4) console.log("Egzamenas neišlaikytas");
+// else console.log("Egzamenas išlaikytas");
+
+console.log(result >= 4 ? "Islaikyta" : "Neislaikyta");
 
 console.log("--------Eksperimentas-----------");
 //2.
@@ -116,6 +121,9 @@ let dalyvis2 = rand(1, 4);
 //vienodi. Pranešimą "Pralaimėjo" - priešingu atveju
 
 console.log(dalyvis1, dalyvis2);
+
+dalyvis1 + dalyvis2 > 6 || dalyvis2 == dalyvis1 ? console.log("Laimėjo") : console.log("Pralaimėjo");
+
 if (dalyvis1 + dalyvis2 > 6 || dalyvis2 == dalyvis1) console.log("Laimėjo");
 else console.log("Pralaimėjo");
 
