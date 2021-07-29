@@ -170,7 +170,7 @@ console.log(stringas);
 
 console.log("Vidinių ciklų: ", vidCiklas, "Išorinių ciklų: ", isorCiklas);
 
-console.log("----------9c užd ------------");
+console.log("----------9b,c užd ------------");
 
 let a9b;
 vidCiklas = 0;
@@ -184,7 +184,6 @@ do {
     vidCiklas++;
   }
   stringas += a9b + " ";
-
   isorCiklas++;
   a9b == 5 ? fiveCount++ : true;
 } while (fiveCount < 3);
