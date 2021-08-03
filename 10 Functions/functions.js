@@ -99,3 +99,14 @@ function zvaigzdutes2(string) {
 }
 
 console.log(zvaigzdutes2("Hipopotamas nerealusis apuokinis"));
+
+console.log("-----------Uzd '5 reaide'-------------");
+
+let str = "Žvirblis";
+let raide = 2;
+
+function penktaRaide(x, y) {
+  return x[y - 1];
+}
+console.log(str, penktaRaide(str, raide));
+console.log(str[raide - 1]);
