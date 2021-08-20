@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks App</title>
+    <script src="baigiamas.js" defer></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="baigiamas.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Tasks App</h1>
+        <button type="button" id="add-new-task"><i class="bi bi-plus-lg"></i> Add new task</button>
+      </header>
+      <div id="status-bar">
+        <div class="status new-task">New&nbsp;tasks</div>
+        <div class="status pending-task">Pending&nbsp;tasks</div>
+        <div class="status done-task">Done&nbsp;tasks</div>
+      </div>
+      <section id="task-list"></section>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div id="createTaskModal" class="modal">
+      <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <h1>Create new task</h1>
+        <input type="text" name="name" id="name" placeholder="Task Name" autofocus required />
+        <input type="text" name="description" id="description" placeholder="Task description" />
+        <button id="createTask">Create Task</button>
+      </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div id="confirmDeleteModal" class="modal">
+      <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <h1>Are you sure?</h1>
+        <button id="confirmDeleteButton">Delete</button>
+        <button id="cancelDelete">Cancel</button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+button {
+  display: block;
+  width: 300px;
+}
+
+/* img {
+  max-width: 250px;
+  max-height: 250px;
+} */
+
+.gallery_img {
+  display: inline-block;
+  border: 1px solid silver;
+  margin: 20px;
+  padding: 10px;
+  background-color: antiquewhite;
+}
+
+.caption {
+  font-style: italic;
+  color: rgb(75, 75, 75);
+}

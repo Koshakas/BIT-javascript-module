@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zootrap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <script src="classes.js" defer></script>
+    <link rel="stylesheet" href="classes.css" />
+  </head>
+  <body>
+    <span>Gyvūno pavadinimas:</span>
+    <input id="name" type="text" value="arklys" />
+    <span>Uodegos ilgis:</span>
+    <input id="tail" type="number" value="20" />
+    <span>Gyvūno spalva:</span>
+    <input id="color" type="text" value="rudas" />
+    <span>Turi ragus</span>
+    <input id="horns" type="checkbox" value="false" /><br />
+    <button id="create">Įrašyti gyvūną</button><br />
+
+    <div id="edit" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Animal</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span class="close-modal" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span>Gyvūno pavadinimas:</span>
+            <input id="edit-id" type="text" value="arklys" />
+            <span>Uodegos ilgis:</span>
+            <input id="edit-tail" type="number" value="20" />
+            <span>Gyvūno spalva:</span>
+            <input id="edit-color" type="text" value="rudas" />
+            <span>Turi ragus</span>
+            <input id="edit-horns" type="checkbox" value="false" /><br />
+            <button id="edit-animal">Įrašyti gyvūną</button><br />
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span class="close-modal" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure?
+            <button class="confirm">Confirm</button>
+            <button id="cancel-delete">Cancel</button><br />
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

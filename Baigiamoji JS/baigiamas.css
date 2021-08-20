@@ -1,0 +1,164 @@
+* {
+  /* outline: 1px solid red; */
+}
+
+body {
+  background-color: rgb(255, 255, 212);
+  color: darkolivegreen;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.wrapper {
+  margin: 20px 15%;
+}
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 340px;
+  margin: 20px 0;
+}
+header h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 35px;
+  color: darkolivegreen;
+}
+
+header button,
+.modal-content button {
+  background-color: darkgreen;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#status-bar {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#status-bar div {
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 18px;
+  font-weight: 400;
+  /* min-width: 120px; */
+}
+
+#status-bar div.new-task {
+  background-color: rgb(104, 228, 215);
+}
+
+#status-bar div.pending-task {
+  background-color: rgb(100, 225, 100);
+}
+
+#status-bar div.done-task {
+  background-color: wheat;
+}
+
+#task-list {
+  min-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+#task-list .task {
+  padding: 0;
+  margin: 10px 5px;
+  min-height: 100px;
+  width: 45%;
+  min-width: 290px;
+  border: 1px solid darkolivegreen;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 232);
+}
+
+#task-list .task .task-header {
+  padding: 5px;
+  font-weight: bold;
+  color: darkolivegreen;
+  border-radius: 8px 8px 0 0;
+}
+
+#task-list .task .task-header i {
+  float: right;
+  cursor: pointer;
+}
+
+#task-list .task .task-body {
+  color: rgb(82, 87, 76);
+  padding: 5px;
+}
+
+.new .task-header {
+  background-color: rgb(104, 228, 215);
+}
+
+.pending .task-header {
+  background-color: rgb(100, 225, 100);
+}
+
+.done .task-header {
+  background-color: wheat;
+}
+
+/* ------------------MODAL--------------------------- */
+
+/* The Modal (background) */
+#createTaskModal,
+#confirmDeleteModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content h1 {
+  font-size: 18px;
+}
+
+.modal-content input {
+  display: block;
+  height: 30px;
+  width: 80%;
+  margin: 10px 0;
+  padding: 2px 5px;
+}
+
+/* The Close Button */
+.closeModal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeModal:hover,
+.closeModal:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
