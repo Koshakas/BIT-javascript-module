@@ -174,7 +174,6 @@ class Animal {
     if (this.hasHorn) ragai = "turi ragų";
     else ragai = "neturi ragų";
     const html = `
-    
     <h2>${this.specie}</h2>
     <div class="description">Uodegos ilgis: <i>${this.tailLength} cm</i>.<br>
     Spalva - ${this.color}.<br>

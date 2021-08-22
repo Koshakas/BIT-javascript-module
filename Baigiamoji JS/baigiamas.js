@@ -3,12 +3,25 @@ class Task {
   element;
   static taskId = 0;
 
-  static createTask(name, description) {
+  static createTask(name, description, status) {
     this.clearTasks();
-    this.tasksList.push(new this(name, description, ++this.taskId));
+    this.tasksList.push(new this(name, description, status, ++this.taskId));
     this.save();
     this.renderTasks();
     this.hideModal("#createTaskModal");
+  }
+
+  static editTask(id) {
+    this.tasksList.forEach(task => {
+      if (task.taskId == id) {
+        this.clearTasks();
+        if (task.status == "new") task.status = "pending";
+        else if (task.status == "pending") task.status = "done";
+        else task.status = "new";
+        this.renderTasks();
+      }
+    });
+    this.save();
   }
 
   static deleteTask(id) {
@@ -31,12 +44,12 @@ class Task {
     const taskDescription = document.querySelector("input#description");
     taskName.addEventListener("keypress", e => {
       if (e.key === "Enter") {
-        this.createTask(taskName.value, taskDescription.value);
+        this.createTask(taskName.value, taskDescription.value, "new");
       }
     });
     taskDescription.addEventListener("keypress", e => {
       if (e.key === "Enter") {
-        this.createTask(taskName.value, taskDescription.value);
+        this.createTask(taskName.value, taskDescription.value, "new");
       }
     });
   }
@@ -56,7 +69,7 @@ class Task {
     createTaskbtn.addEventListener("click", () => {
       const taskName = document.querySelector("input#name");
       const taskDescription = document.querySelector("input#description");
-      this.createTask(taskName.value, taskDescription.value);
+      this.createTask(taskName.value, taskDescription.value, "new");
     });
   }
 
@@ -91,11 +104,14 @@ class Task {
     taskName.focus();
   }
 
-  static showConfirmDeleteModal(taskId) {
+  static showConfirmDeleteModal(taskId, name) {
     const modal = document.querySelector("#confirmDeleteModal");
     modal.style.display = "block";
     modal.querySelector("#confirmDeleteButton").dataset.id = taskId;
-    console.log(taskId);
+
+    const message = modal.querySelector("h1");
+    message.innerHTML = "";
+    message.appendChild(document.createTextNode(`Really Delete Task "${name}"?`));
   }
 
   static hideModal(selector) {
@@ -128,7 +144,35 @@ class Task {
   }
 
   static renderTasks() {
-    this.tasksList.forEach(e => e.render());
+    this.updateStatus();
+    this.tasksList.forEach(task => {
+      if (task.status == "new") task.render();
+    });
+    this.tasksList.forEach(task => {
+      if (task.status == "pending") task.render();
+    });
+    this.tasksList.forEach(task => {
+      if (task.status == "done") task.render();
+    });
+  }
+
+  static updateStatus() {
+    let newTasks = 0;
+    let pendingTasks = 0;
+    let doneTasks = 0;
+    this.tasksList.forEach(task => {
+      if (task.status == "new") newTasks++;
+      if (task.status == "pending") pendingTasks++;
+      if (task.status == "done") doneTasks++;
+    });
+    const newTask = document.querySelector(".new-task");
+    newTask.innerHTML = `New&nbsp;tasks:&nbsp${newTasks}`;
+
+    const pendingTask = document.querySelector(".pending-task");
+    pendingTask.innerHTML = `Pending&nbsp;tasks:&nbsp${pendingTasks}`;
+
+    const doneTask = document.querySelector(".done-task");
+    doneTask.innerHTML = `Done&nbsp;tasks:&nbsp${doneTasks}`;
   }
 
   static clearTasks() {
@@ -147,10 +191,10 @@ class Task {
 
   // --------------Objective---------------------
 
-  constructor(name, description, taskId) {
+  constructor(name, description, status, taskId) {
     this.name = name;
     this.description = description;
-    this.status = "new";
+    this.status = status;
     this.taskId = taskId;
   }
 
@@ -168,18 +212,19 @@ class Task {
   createTaskHtml() {
     const taskHtml = document.createElement("div");
     taskHtml.classList.add(this.status);
-    // console.log(this.status);
     const header = document.createElement("div");
     header.classList.add("task-header");
+    header.dataset.id = this.taskId;
     header.appendChild(document.createTextNode(this.name));
-    // console.log(this.name);
+    header.addEventListener("dblclick", () => {
+      this.constructor.editTask(this.taskId);
+    });
 
     const del = document.createElement("i");
     del.classList.add("bi", "bi-x-circle");
     header.appendChild(del);
-    del.addEventListener("click", e => {
-      this.constructor.showConfirmDeleteModal(this.taskId);
-      console.log(this.taskId);
+    del.addEventListener("click", () => {
+      this.constructor.showConfirmDeleteModal(this.taskId, this.name);
     });
 
     const body = document.createElement("div");

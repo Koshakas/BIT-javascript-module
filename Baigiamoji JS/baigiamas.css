@@ -1,22 +1,31 @@
-* {
-  /* outline: 1px solid red; */
+:root {
+  --main-bg-color: rgb(255, 255, 255);
+  --task-bg-color: rgb(236, 236, 236);
+  --new-task-color: rgb(49, 211, 49);
+  --pending-task-color: rgb(73, 118, 240);
+  --done-task-color: rgb(141, 141, 141);
+  --text-color: darkolivegreen;
+  --light-text-color: white;
 }
 
 body {
-  background-color: rgb(255, 255, 212);
-  color: darkolivegreen;
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  /* background-image: url(background.jpg);
+  background-size: cover; */
 }
 
 .wrapper {
-  margin: 20px 15%;
+  margin: 20px 5%;
 }
 
 header {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  min-width: 340px;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 620px;
+  min-width: 350px;
   margin: 20px 0;
 }
 header h1 {
@@ -29,7 +38,7 @@ header h1 {
 header button,
 .modal-content button {
   background-color: darkgreen;
-  color: white;
+  color: var(--light-text-color);
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
@@ -42,31 +51,32 @@ header button,
   justify-content: flex-start;
 }
 
-#status-bar div {
+#status-bar .status {
+  color: var(--light-text-color);
   border-radius: 5px;
   padding: 5px 10px;
-  margin: 0 5px;
+  margin: 3px 5px;
   font-size: 18px;
   font-weight: 400;
   /* min-width: 120px; */
 }
 
 #status-bar div.new-task {
-  background-color: rgb(104, 228, 215);
+  background-color: var(--new-task-color);
 }
 
 #status-bar div.pending-task {
-  background-color: rgb(100, 225, 100);
+  background-color: var(--pending-task-color);
 }
 
 #status-bar div.done-task {
-  background-color: wheat;
+  background-color: var(--done-task-color);
 }
 
 #task-list {
   min-width: 480px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: flex-start; */
   flex-wrap: wrap;
 }
 
@@ -74,22 +84,22 @@ header button,
   padding: 0;
   margin: 10px 5px;
   min-height: 100px;
-  width: 45%;
-  min-width: 290px;
+  width: 30%;
   border: 1px solid darkolivegreen;
   border-radius: 8px;
-  background-color: rgb(255, 255, 232);
+  background-color: var(--task-bg-color);
 }
 
 #task-list .task .task-header {
+  display: flex;
+  justify-content: space-between;
   padding: 5px;
   font-weight: bold;
-  color: darkolivegreen;
+  color: var(--light-text-color);
   border-radius: 8px 8px 0 0;
 }
 
 #task-list .task .task-header i {
-  float: right;
   cursor: pointer;
 }
 
@@ -99,15 +109,18 @@ header button,
 }
 
 .new .task-header {
-  background-color: rgb(104, 228, 215);
+  background-color: var(--new-task-color);
 }
 
 .pending .task-header {
-  background-color: rgb(100, 225, 100);
+  background-color: var(--pending-task-color);
 }
 
 .done .task-header {
-  background-color: wheat;
+  background-color: var(--done-task-color);
+  text-decoration: line-through;
+  font-weight: normal !important;
+  font-style: italic;
 }
 
 /* ------------------MODAL--------------------------- */
@@ -120,7 +133,8 @@ header button,
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
+  width: 100%;
+  min-width: 290px;
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
@@ -130,10 +144,10 @@ header button,
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 100px auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 350px; /* Could be more or less, depending on screen size */
 }
 
 .modal-content h1 {
@@ -161,4 +175,55 @@ header button,
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  #task-list .task {
+    width: 45%;
+  }
+}
+@media screen and (max-width: 480px) {
+  body {
+    margin: 0;
+  }
+  header {
+    min-width: 250px;
+    justify-items: center;
+  }
+  header h1 {
+    text-align: center;
+  }
+  #status-bar {
+    flex-direction: column;
+  }
+  #status-bar .status {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    width: 150px;
+  }
+  #task-list {
+    margin-top: 20px;
+    min-width: auto;
+  }
+  #task-list .task {
+    width: 100%;
+    min-width: 250px;
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  #task-list .task .task-header {
+    border-radius: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  #task-list .task .task-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .wrapper {
+    margin: 0;
+  }
 }
