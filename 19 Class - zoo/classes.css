@@ -7,6 +7,10 @@ input {
   display: block;
   margin: 4px 0;
 }
+input[type="radio"] {
+  display: inline;
+}
+
 input#horns {
   display: inline;
 }
@@ -34,10 +38,11 @@ div.animal .description {
 
 button {
   margin: 10px 0;
-  padding: 5px 10px;
-  background-color: rgba(255, 255, 255, 0);
+  padding: 3px 7px;
+  background-color: rgb(209, 209, 209);
   cursor: pointer;
   border-radius: 5px;
+  font-size: 12px;
 }
 div.animal button.edit {
   border: 1px solid rgb(0, 196, 49);
@@ -51,7 +56,20 @@ div.animal button.edit:hover {
 div.animal button.delete:hover {
   background-color: rgb(255, 134, 97);
 }
+.dropdown {
+  min-width: 300px;
+}
+.sort {
+  min-width: 250px;
 
+  /* align-items: flex-end; */
+}
+h2 {
+  font-size: 16px;
+}
+#toolbar {
+  display: flex;
+}
 /* div#edit {
   display: block;
   opacity: 1;

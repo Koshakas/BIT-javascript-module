@@ -3,6 +3,7 @@ class Animal {
 
   static animals = [];
   element;
+  static filterSet;
 
   static createAnimal(specie, tail, color, horns) {
     this.clearZoo();
@@ -13,10 +14,12 @@ class Animal {
 
   static renderZoo() {
     this.animals.forEach(e => e.render());
+    this.filterSelect();
   }
 
   static clearZoo() {
     document.querySelectorAll("div.animal").forEach(e => e.remove());
+    this.clearFilterSelect();
   }
 
   static buttonCreate() {
@@ -52,6 +55,96 @@ class Animal {
     });
   }
 
+  static sortButtons() {
+    document.querySelector("#sort_specie").addEventListener("click", e => {
+      this.showSorted(e.target.id);
+    });
+    document.querySelector("#sort_tail_long").addEventListener("click", e => {
+      this.showSorted(e.target.id);
+    });
+  }
+
+  static filterButton() {
+    document.querySelector("#filter").addEventListener("click", () => {
+      this.showFiltered();
+    });
+  }
+
+  static showFiltered() {
+    const filterValue = document.querySelector("#animals_list").value;
+    const an = [];
+    this.animals.forEach(animal => {
+      if (animal.specie == filterValue) {
+        an.push(animal);
+      }
+    });
+    this.animals = an;
+    this.clearZoo();
+    this.renderZoo();
+  }
+
+  static showAllButton() {
+    document.querySelector("#show_all").addEventListener("click", () => {
+      this.animals = [];
+      this.load();
+    });
+  }
+
+  static showSorted(id) {
+    const dir = document.querySelector("#sort_desc").checked ? 1 : -1;
+    if (id == "sort_tail_long") {
+      this.animals.sort(function (a, b) {
+        return dir * (a.tailLength - b.tailLength);
+      });
+    }
+    if (id == "sort_specie") {
+      this.animals.sort(function (a, b) {
+        const nameA = a.specie.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.specie.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -dir;
+        }
+        if (nameA > nameB) {
+          return dir;
+        }
+      });
+    }
+    this.clearZoo();
+    this.renderZoo();
+  }
+
+  static makeFilterSet() {
+    this.filterSet = new Set();
+    this.animals.sort(function (a, b) {
+      const nameA = a.specie.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.specie.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+    });
+
+    this.animals.forEach(animal => {
+      this.filterSet.add(animal.specie);
+    });
+  }
+
+  static filterSelect() {
+    const html = document.querySelector("#animals_list");
+    this.filterSet.forEach(animal => {
+      const option = document.createElement("option");
+      option.appendChild(document.createTextNode(animal));
+      option.setAttribute("value", animal);
+      html.appendChild(option);
+    });
+  }
+
+  static clearFilterSelect() {
+    document.querySelector("#animals_list").innerHTML = "";
+  }
+
   static hideModal(query) {
     const modal = document.querySelector(query);
     modal.style.display = "none";
@@ -65,6 +158,9 @@ class Animal {
     this.buttonHideModal();
     this.buttonEdit();
     this.confirmDeleteButton();
+    this.sortButtons();
+    this.filterButton();
+    this.showAllButton();
   }
 
   static deleteAnimal(id) {
@@ -86,10 +182,10 @@ class Animal {
         animal.tailLength = tail;
         animal.color = color;
         animal.hasHorn = horn;
-        this.renderZoo();
       }
     });
     this.save();
+    this.renderZoo();
     this.hideModal("#edit");
   }
 
@@ -103,8 +199,8 @@ class Animal {
         hasHorn: animal.hasHorn
       });
     });
-    // console.log(saved);
     localStorage.setItem("zooApp", JSON.stringify(saved));
+    this.makeFilterSet();
   }
 
   static load() {
@@ -116,6 +212,7 @@ class Animal {
     restore.forEach(animal => {
       this.createAnimal(animal.specie, animal.tailLength, animal.color, animal.hasHorn);
     });
+    this.makeFilterSet();
   }
 
   static showEditModal(animal) {
@@ -177,8 +274,7 @@ class Animal {
     <h2>${this.specie}</h2>
     <div class="description">Uodegos ilgis: <i>${this.tailLength} cm</i>.<br>
     Spalva - ${this.color}.<br>
-    Jis ${ragai}<br>
-    ID:  ${this.id}</div>
+    Jis ${ragai}</div>
     <button class="edit" type="button" data-id="${this.id}">Redaguoti</button>
     <button class="delete" type="button" data-id="${this.id}">Ištrinti</button>
     `;

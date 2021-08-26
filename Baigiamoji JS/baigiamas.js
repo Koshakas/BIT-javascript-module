@@ -2,6 +2,9 @@ class Task {
   static tasksList = [];
   element;
   static taskId = 0;
+  static newTasks = 0;
+  static pendingTasks = 0;
+  static doneTasks = 0;
 
   static createTask(name, description, status) {
     this.clearTasks();
@@ -15,9 +18,17 @@ class Task {
     this.tasksList.forEach(task => {
       if (task.taskId == id) {
         this.clearTasks();
-        if (task.status == "new") task.status = "pending";
-        else if (task.status == "pending") task.status = "done";
-        else task.status = "new";
+        let check = 0;
+        if (task.status == "new") {
+          if (this.newTasks <= 1) swiper.slideNext(300, true);
+          task.status = "pending";
+        } else if (task.status == "pending") {
+          if (this.pendingTasks <= 1) swiper.slideNext(300, true);
+          task.status = "done";
+        } else {
+          if (this.doneTasks <= 1) swiper.slideTo(0, 300, true);
+          task.status = "new";
+        }
         this.renderTasks();
       }
     });
@@ -88,6 +99,32 @@ class Task {
     });
   }
 
+  static statusButtons() {
+    const newTaskBtn = document.querySelector(".new-task");
+    if (this.newTasks == 0) {
+      newTaskBtn.style.cursor = "default";
+    }
+    newTaskBtn.addEventListener("click", () => {
+      swiper.slideTo(0, 300, true);
+    });
+
+    const pendingTaskBtn = document.querySelector(".pending-task");
+    if (this.pendingTasks == 0) {
+      pendingTaskBtn.style.cursor = "default";
+    }
+    pendingTaskBtn.addEventListener("click", () => {
+      swiper.slideTo(1, 300, true);
+    });
+
+    const doneTaskBtn = document.querySelector(".done-task");
+    if (this.doneTasks == 0) {
+      doneTaskBtn.style.cursor = "default";
+    }
+    doneTaskBtn.addEventListener("click", () => {
+      swiper.slideTo(2, 300, true);
+    });
+  }
+
   // ----------------------Buttons END---------------------------
 
   //-----------------------Modals START--------------------------
@@ -97,8 +134,8 @@ class Task {
     const taskName = document.querySelector("input#name");
     const taskDescription = document.querySelector("input#description");
 
-    taskName.value = ""; //reset input fields
-    taskDescription.value = ""; //reset input fields
+    taskName.value = sentence(); //random name
+    taskDescription.value = sentence() + sentence(); //random task
     modal.style.display = "block"; //show modal
 
     taskName.focus();
@@ -145,34 +182,28 @@ class Task {
 
   static renderTasks() {
     this.updateStatus();
-    this.tasksList.forEach(task => {
-      if (task.status == "new") task.render();
-    });
-    this.tasksList.forEach(task => {
-      if (task.status == "pending") task.render();
-    });
-    this.tasksList.forEach(task => {
-      if (task.status == "done") task.render();
-    });
+    this.tasksList.forEach(task => task.render());
   }
 
   static updateStatus() {
-    let newTasks = 0;
-    let pendingTasks = 0;
-    let doneTasks = 0;
+    this.newTasks = 0;
+    this.pendingTasks = 0;
+    this.doneTasks = 0;
     this.tasksList.forEach(task => {
-      if (task.status == "new") newTasks++;
-      if (task.status == "pending") pendingTasks++;
-      if (task.status == "done") doneTasks++;
+      if (task.status == "new") this.newTasks++;
+      if (task.status == "pending") this.pendingTasks++;
+      if (task.status == "done") this.doneTasks++;
     });
     const newTask = document.querySelector(".new-task");
-    newTask.innerHTML = `New&nbsp;tasks:&nbsp${newTasks}`;
+    newTask.innerHTML = `New: ${this.newTasks}`;
 
     const pendingTask = document.querySelector(".pending-task");
-    pendingTask.innerHTML = `Pending&nbsp;tasks:&nbsp${pendingTasks}`;
-
+    pendingTask.innerHTML = `Pending: ${this.pendingTasks}`;
     const doneTask = document.querySelector(".done-task");
-    doneTask.innerHTML = `Done&nbsp;tasks:&nbsp${doneTasks}`;
+    doneTask.innerHTML = `Done: ${this.doneTasks}`;
+
+    const totalTasks = document.querySelector("div.total-tasks");
+    totalTasks.innerText = `Total: ${this.newTasks + this.pendingTasks + this.doneTasks}`;
   }
 
   static clearTasks() {
@@ -186,7 +217,7 @@ class Task {
     this.cancelDeleteButton();
     this.confirmDeleteButton();
     this.closeModalButton();
-    console.log(this.tasksList);
+    this.statusButtons();
   }
 
   // --------------Objective---------------------
@@ -206,19 +237,30 @@ class Task {
   createTaskElement() {
     this.element = document.createElement("div");
     this.element.classList.add("task");
-    document.querySelector("section#task-list").appendChild(this.element);
+    document.querySelector(`#task-section .${this.status}`).appendChild(this.element);
   }
 
   createTaskHtml() {
     const taskHtml = document.createElement("div");
     taskHtml.classList.add(this.status);
+
     const header = document.createElement("div");
     header.classList.add("task-header");
     header.dataset.id = this.taskId;
-    header.appendChild(document.createTextNode(this.name));
+
+    const headerTitle = document.createElement("div");
+    headerTitle.appendChild(document.createTextNode(this.name));
+    header.appendChild(headerTitle);
     header.addEventListener("dblclick", () => {
       this.constructor.editTask(this.taskId);
     });
+
+    const changeStatus = document.createElement("i");
+    changeStatus.classList.add("bi", "bi-check-circle");
+    changeStatus.addEventListener("click", () => {
+      this.constructor.editTask(this.taskId);
+    });
+    header.appendChild(changeStatus);
 
     const del = document.createElement("i");
     del.classList.add("bi", "bi-x-circle");
@@ -237,5 +279,49 @@ class Task {
     this.element.appendChild(taskHtml);
   }
 }
+
+//-------------------------------START Random task generator----------------------
+
+const nouns = ["bird", "clock", "boy", "plastic", "duck", "teacher", "old lady", "professor", "hamster", "dog"];
+const verbs = ["kicked", "ran", "flew", "dodged", "sliced", "rolled", "died", "breathed", "slept", "killed"];
+const adjectives = ["beautiful", "lazy", "professional", "lovely", "dumb", "rough", "soft", "hot", "vibrating", "slimy"];
+const adverbs = ["slowly", "elegantly", "precisely", "quickly", "sadly", "humbly", "proudly", "shockingly", "calmly", "passionately"];
+const preposition = ["down", "into", "up", "on", "upon", "below", "above", "through", "across", "towards"];
+
+function randGen() {
+  return Math.floor(Math.random() * 5);
+}
+
+function sentence() {
+  const rand2 = Math.floor(Math.random() * 10);
+  const rand3 = Math.floor(Math.random() * 10);
+  const rand4 = Math.floor(Math.random() * 10);
+  const content = "The " + nouns[rand2] + " " + adverbs[rand3] + " " + verbs[rand4] + ".";
+  return content;
+}
+
+//------------------------------END Random task generator---------------------------
+//-----------------------------------Swiper-----------------------------------------
+const swiper = new Swiper(".swiper", {
+  // Optional parameters
+  direction: "horizontal",
+  loop: false,
+
+  // Navigation arrows
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev"
+  },
+
+  breakpoints: {
+    // when window width is >= 480px
+    540: {
+      slidesPerView: 3,
+      spaceBetween: 0
+    }
+  }
+});
+
+//-----------------------------------Swiper-----------------------------------------
 
 Task.start();

@@ -4,23 +4,48 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zootrap</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <title>Zoo App</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
     <script src="classes.js" defer></script>
     <link rel="stylesheet" href="classes.css" />
   </head>
   <body>
-    <span>Gyvūno pavadinimas:</span>
-    <input id="name" type="text" value="arklys" />
-    <span>Uodegos ilgis:</span>
-    <input id="tail" type="number" value="20" />
-    <span>Gyvūno spalva:</span>
-    <input id="color" type="text" value="rudas" />
-    <span>Turi ragus</span>
-    <input id="horns" type="checkbox" value="false" /><br />
-    <button id="create">Įrašyti gyvūną</button><br />
+    <div>
+      <span>Gyvūno pavadinimas:</span>
+      <input id="name" type="text" value="arklys" />
+      <span>Uodegos ilgis:</span>
+      <input id="tail" type="number" value="20" />
+      <span>Gyvūno spalva:</span>
+      <input id="color" type="text" value="rudas" />
+      <span>Turi ragus</span>
+      <input id="horns" type="checkbox" value="false" /><br />
+      <button id="create">Įrašyti gyvūną</button>
+    </div>
 
+    <hr />
+    <div id="toolbar">
+      <div class="sort">
+        <h2>Rušiavimas:</h2>
+        <input type="radio" checked name="sort_dir" id="sort_desc" /><label for="sort_desc">A-Z</label> |
+        <input type="radio" name="sort_dir" id="sort_asc" /> <label for="sort_asc">Z-A</label><br />
+        <button id="sort_specie">Pagal vardą</button>
+        <button id="sort_tail_long">Pagal uodegos ilgį</button><br />
+      </div>
+      <div class="dropdown">
+        <h2>Filtravimas:</h2>
+        <select name="animals-drop" id="animals_list">
+          <option value="Default" selected>Pasirinkite...</option>
+        </select>
+        <button id="filter">Filtruoti</button>
+        <button id="show_all">Rodyti visus</button>
+      </div>
+    </div>
     <div id="edit" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

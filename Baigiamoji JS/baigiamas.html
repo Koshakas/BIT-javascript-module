@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tasks App</title>
     <script src="baigiamas.js" defer></script>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="baigiamas.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -18,11 +18,18 @@
         <button type="button" id="add-new-task"><i class="bi bi-plus-lg"></i> Add new task</button>
       </header>
       <div id="status-bar">
-        <div class="status new-task">New&nbsp;tasks</div>
-        <div class="status pending-task">Pending&nbsp;tasks</div>
-        <div class="status done-task">Done&nbsp;tasks</div>
+        <div class="status new-task"></div>
+        <div class="status pending-task"></div>
+        <div class="status done-task"></div>
+        <div class="total-tasks"></div>
       </div>
-      <section id="task-list"></section>
+      <div id="task-section" class="swiper">
+        <div class="swiper-wrapper">
+          <div class="task-list new swiper-slide"></div>
+          <div class="task-list pending swiper-slide"></div>
+          <div class="task-list done swiper-slide"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Create Task Modal -->
