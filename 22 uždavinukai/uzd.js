@@ -71,7 +71,7 @@ console.log("9 Užd, surikiuotas Mapas:", gyv);
 
 const gyvMas2 = [...gyv];
 gyvMas2.sort((a, b) => {
-  if (a[0][0] > b[0][0]) return 1;
+  if (a[0] > b[0]) return 1;
   else return -1;
 });
 console.log(gyvMas2);
@@ -79,3 +79,5 @@ gyv.clear();
 gyvMas2.map(item => gyv.set(item[0], item[1]));
 
 console.log("10 Užd, surikiuotas pagal vardus:", gyv);
+
+//-----------------------Naujos------------------------

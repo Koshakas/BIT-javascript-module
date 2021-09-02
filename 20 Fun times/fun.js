@@ -75,6 +75,14 @@ class Burbulas {
   static burbulai;
   static w;
   static h;
+  static startBtn = document.querySelector("button");
+  static timerDiv = document.querySelector("#timer");
+  static tableUl = document.querySelector("ul");
+  static timeStart;
+  static clockId;
+  static gamer;
+  static table;
+  static score;
 
   static naujasBurbulas = () => {
     const b = new this();
@@ -83,22 +91,37 @@ class Burbulas {
 
   static start() {
     this.ekranoDydis();
-    document.body.addEventListener("click", () => {
-      this.naujasBurbulas();
-    });
     this.burbulai = new Map();
+    this.load();
+    this.displayTable();
 
     const btn = document.querySelector("button");
     btn.addEventListener("click", e => {
       console.log("click");
       e.stopPropagation();
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 2; i++) {
         setTimeout(this.naujasBurbulas, this.rand(1, 1000));
       }
-
-      btn.style.display = "none";
+      document.body.addEventListener("click", this.naujasBurbulas);
+      this.startBtn.style.display = "none";
+      this.timeStart = new Date();
+      this.clockId = setInterval(this.doTick, 100);
+      const input = document.querySelector("input#vardas");
+      this.gamer = input.value;
+      console.log(this.gamer);
+      input.value = "";
+      input.style.display = "none";
+      document.querySelector("#input-label").style.display = "none";
     });
   }
+
+  static doTick = () => {
+    const tick = new Date();
+    const time = tick.getTime() - this.timeStart.getTime();
+    const sec = Math.floor(time / 1000);
+    const dec = Math.floor((time - sec * 1000) / 100);
+    this.timerDiv.innerText = sec + ":" + dec;
+  };
 
   static rand(min, max) {
     min = Math.ceil(min);
@@ -116,6 +139,43 @@ class Burbulas {
     burbulas.element.remove();
     this.burbulai.delete(burbulas.id);
     clearInterval(this.timerId);
+    if (this.burbulai.size == 0) {
+      this.gameEnd();
+    }
+  }
+
+  static gameEnd() {
+    const tick = new Date();
+    const time = tick.getTime() - this.timeStart.getTime();
+    const sec = Math.floor(time / 1000);
+    const dec = Math.floor((time - sec * 1000) / 10);
+    this.timerDiv.innerText = sec + ":" + dec;
+
+    this.startBtn.style.display = "block";
+    document.body.removeEventListener("click", this.naujasBurbulas);
+    clearInterval(this.clockId);
+    document.querySelector("#input-label").style.display = "inline";
+    document.querySelector("input#vardas").style.display = "inline";
+    this.table.push({ name: this.gamer, score: sec + ":" + dec, time: time });
+    this.table.sort((a, b) => a.time - b.time);
+    localStorage.setItem("ballApp", JSON.stringify(this.table.slice(0, 5)));
+    this.table = this.table.slice(0, 5);
+    this.displayTable();
+  }
+
+  static load() {
+    if (localStorage.getItem("ballApp") == null) {
+      localStorage.setItem("ballApp", JSON.stringify([]));
+    }
+    this.table = JSON.parse(localStorage.getItem("ballApp"));
+  }
+
+  static displayTable() {
+    let html = "";
+    this.table.forEach(g => {
+      html += `<li>${g.name} ${g.score}</li>`;
+    });
+    this.tableUl.innerHTML = html;
   }
 
   varyk = () => {

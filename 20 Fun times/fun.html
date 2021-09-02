@@ -36,11 +36,56 @@
         cursor: pointer;
       }
       body {
+        margin: 0;
+      }
+      #container {
         height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      button {
+        width: 210px;
+        height: 50px;
+        font-size: 20px;
+      }
+      #timer {
+        width: 200px;
+        text-align: center;
+        background-color: transparent;
+        color: tomato;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 50px;
+        padding: 15px;
+      }
+      #scoreboard {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: #999;
+        text-align: right;
+      }
+      ul {
+        margin: 0;
+        padding: 10px 0 0 0;
+        list-style: none;
       }
     </style>
   </head>
   <body>
-    <button>Paleisti burbulus!</button>
+    <div id="container">
+      <button>Paleisti burbulus!</button>
+      <label id="input-label" for="vardas">Įveskite vardą</label>
+      <input type="text" id="vardas" />
+    </div>
+    <div id="timer">0:0</div>
+    <div id="scoreboard">
+      Scoreboard:
+      <ul></ul>
+    </div>
   </body>
 </html>

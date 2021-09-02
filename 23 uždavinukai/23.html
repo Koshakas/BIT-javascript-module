@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="23.js" defer></script>
+    <style>
+      .shelf {
+        display: flex;
+        flex-wrap: wrap;
+        /* border: 1px solid red; */
+      }
+      .shelf .book {
+        width: 150px;
+        margin: 15px;
+        padding: 15px;
+        /* height: 250px; */
+        border: 1px solid silver;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .shelf .book h2 {
+        font-size: 16px;
+      }
+      .shelf .book img {
+        /* height: 250px; */
+        width: 150px;
+      }
+      .price {
+        font-weight: bold;
+        font-style: italic;
+      }
+      .quantity {
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="shelf"></div>
+  </body>
+</html>

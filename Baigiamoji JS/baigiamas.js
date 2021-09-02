@@ -1,10 +1,11 @@
 class Task {
-  static tasksList = [];
   element;
+  static tasksList = [];
   static taskId = 0;
   static newTasks = 0;
   static pendingTasks = 0;
   static doneTasks = 0;
+  static mobile = false;
 
   static createTask(name, description, status) {
     this.clearTasks();
@@ -18,7 +19,6 @@ class Task {
     this.tasksList.forEach(task => {
       if (task.taskId == id) {
         this.clearTasks();
-        let check = 0;
         if (task.status == "new") {
           if (this.newTasks <= 1) swiper.slideNext(300, true);
           task.status = "pending";
@@ -26,8 +26,8 @@ class Task {
           if (this.pendingTasks <= 1) swiper.slideNext(300, true);
           task.status = "done";
         } else {
-          if (this.doneTasks <= 1) swiper.slideTo(0, 300, true);
-          task.status = "new";
+          if (this.doneTasks <= 1) swiper.slidePrev(300, true);
+          task.status = "pending";
         }
         this.renderTasks();
       }
@@ -40,11 +40,38 @@ class Task {
       if (task.taskId == id) {
         this.clearTasks();
         this.tasksList.splice(i, 1);
-        console.log(i, this.tasksList[i]);
         this.renderTasks();
       }
     });
     this.save();
+  }
+
+  static mobileListener() {
+    const headers = document.querySelectorAll(".task-header");
+    if (window.innerWidth < 540) this.mobile = true;
+    else {
+      headers.forEach(h => {
+        h.addEventListener("dblclick", () => {
+          this.editTask(h.dataset.id);
+        });
+      });
+    }
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth < 540) {
+        this.mobile = true;
+        headers.forEach(h => {
+          h.removeEventListener("dblclick", () => {});
+        });
+      } else {
+        this.mobile = false;
+        headers.forEach(h => {
+          h.addEventListener("dblclick", () => {
+            this.editTask(h.dataset.id);
+          });
+        });
+      }
+    });
   }
 
   // --------------------- Buttons START---------------------------
@@ -56,11 +83,13 @@ class Task {
     taskName.addEventListener("keypress", e => {
       if (e.key === "Enter") {
         this.createTask(taskName.value, taskDescription.value, "new");
+        swiper.slideTo(0, 300, true);
       }
     });
     taskDescription.addEventListener("keypress", e => {
       if (e.key === "Enter") {
         this.createTask(taskName.value, taskDescription.value, "new");
+        swiper.slideTo(0, 300, true);
       }
     });
   }
@@ -81,6 +110,7 @@ class Task {
       const taskName = document.querySelector("input#name");
       const taskDescription = document.querySelector("input#description");
       this.createTask(taskName.value, taskDescription.value, "new");
+      swiper.slideTo(0, 300, true);
     });
   }
 
@@ -148,7 +178,7 @@ class Task {
 
     const message = modal.querySelector("h1");
     message.innerHTML = "";
-    message.appendChild(document.createTextNode(`Really Delete Task "${name}"?`));
+    message.appendChild(document.createTextNode(`Really Delete: ${name}?`));
   }
 
   static hideModal(selector) {
@@ -178,11 +208,13 @@ class Task {
     restore.forEach(task => {
       this.createTask(task.name, task.description, task.status);
     });
+    this.updateStatus();
   }
 
   static renderTasks() {
     this.updateStatus();
     this.tasksList.forEach(task => task.render());
+    this.mobileListener();
   }
 
   static updateStatus() {
@@ -194,6 +226,7 @@ class Task {
       if (task.status == "pending") this.pendingTasks++;
       if (task.status == "done") this.doneTasks++;
     });
+
     const newTask = document.querySelector(".new-task");
     newTask.innerHTML = `New: ${this.newTasks}`;
 
@@ -212,6 +245,7 @@ class Task {
 
   static start() {
     this.load();
+    this.mobileListener();
     this.newTaskButton();
     this.confirmCreateButton();
     this.cancelDeleteButton();
@@ -251,12 +285,15 @@ class Task {
     const headerTitle = document.createElement("div");
     headerTitle.appendChild(document.createTextNode(this.name));
     header.appendChild(headerTitle);
-    header.addEventListener("dblclick", () => {
-      this.constructor.editTask(this.taskId);
-    });
+    // header.addEventListener("dblclick", () => {
+    //   this.constructor.editTask(this.taskId);
+    // });
 
     const changeStatus = document.createElement("i");
-    changeStatus.classList.add("bi", "bi-check-circle");
+    if (this.status == "new") changeStatus.classList.add("bi", "bi-arrow-right-circle");
+    else if (this.status == "pending") changeStatus.classList.add("bi", "bi-check-circle");
+    else changeStatus.classList.add("bi", "bi-arrow-left-circle");
+
     changeStatus.addEventListener("click", () => {
       this.constructor.editTask(this.taskId);
     });
@@ -265,6 +302,7 @@ class Task {
     const del = document.createElement("i");
     del.classList.add("bi", "bi-x-circle");
     header.appendChild(del);
+
     del.addEventListener("click", () => {
       this.constructor.showConfirmDeleteModal(this.taskId, this.name);
     });
@@ -296,7 +334,7 @@ function sentence() {
   const rand2 = Math.floor(Math.random() * 10);
   const rand3 = Math.floor(Math.random() * 10);
   const rand4 = Math.floor(Math.random() * 10);
-  const content = "The " + nouns[rand2] + " " + adverbs[rand3] + " " + verbs[rand4] + ".";
+  const content = "The " + nouns[rand2] + " " + adverbs[rand3] + " " + verbs[rand4];
   return content;
 }
 
@@ -314,7 +352,7 @@ const swiper = new Swiper(".swiper", {
   },
 
   breakpoints: {
-    // when window width is >= 480px
+    // when window width is >= 540px
     540: {
       slidesPerView: 3,
       spaceBetween: 0
